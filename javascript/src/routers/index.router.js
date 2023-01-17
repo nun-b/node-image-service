@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const { isLoggedIn, isNotLoggedIn } = require('./middleware/login-status');
-const { viewMainPage, viewJoinPage, viewHashTabPage, viewProfilePage } = require('./controllers/index.control.js');
+const { viewMainPage, viewJoinPage, viewHashTagPage, viewProfilePage } = require('./controllers/index.control.js');
 
 const router = express.Router();
 
@@ -20,6 +20,6 @@ router.get('/join', isNotLoggedIn, viewJoinPage);
 // 로그인 한 사람만, 프로파일을 보여 준다.
 router.get('/profile', isLoggedIn, viewProfilePage);
 // 헤시태그 찾기 -> hashtag?hashtag=고양이
-router.get('/hashtag', viewHashTabPage);
+router.get('/hashtag', viewHashTagPage);
 
 module.exports = router;
