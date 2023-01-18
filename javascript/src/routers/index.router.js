@@ -6,7 +6,8 @@ const { viewMainPage, viewJoinPage, viewHashTagPage, viewProfilePage } = require
 const router = express.Router();
 
 router.use((req, res, next) => {
-    // 라우터들에서 공통적으로 쓰이는 변수 설정
+    // 라우터용 미들웨어
+    // 라우터들에서 템플릿 엔진에서 공통으로 사용되는 변수 설정
     res.locals.user = req.user;     // req.user 사용자 정보
     res.locals.followerCount = req.user?.Followers?.length || 0;
     res.locals.followingCount = req.user?.Followings?.length || 0;
@@ -14,12 +15,13 @@ router.use((req, res, next) => {
     next();
 });
 
+// 메인 페이지
 router.get('/', viewMainPage);
-// 로그인 안한 사람만, 회원가입 할수 있도록 한다.
+// 회원 가입(로그인 안한 사람)
 router.get('/join', isNotLoggedIn, viewJoinPage);
-// 로그인 한 사람만, 프로파일을 보여 준다.
+// 프로파일(로그인 한 사람)
 router.get('/profile', isLoggedIn, viewProfilePage);
-// 헤시태그 찾기 -> hashtag?hashtag=고양이
+// 헤시태그로 게시물 찾기 => hashtag?hashtag=고양이
 router.get('/hashtag', viewHashTagPage);
 
 module.exports = router;

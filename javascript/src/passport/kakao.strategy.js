@@ -33,7 +33,7 @@ _json: {
 module.exports = () => {
     passport.use(new KakaoStrategy({
         // 설정
-        clientID: process.env.APP_KAKAO_ID,
+        clientID: process.env.COOKIE_KID,
         callbackURL: '/auth/kakao/callback',
     }, async (accessToken, refreshToken, profile, done) => {
         // 콜백

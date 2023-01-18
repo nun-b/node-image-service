@@ -40,7 +40,7 @@ server.use(session({
     }
 }));
 server.use(passport.initialize());
-// passport.initialize() 하므로써, 로그인에 필요한 객체를 생성
+// passport 로그인에 필요한 객체를 생성
 // req.user, req.login, req.isAuthenticate, req.logout
 server.use(passport.session());
 // passport.serializeUser 성공해서 생성된 user.id 값을 세션에 저장하고
