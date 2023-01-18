@@ -2,7 +2,7 @@
 const { User, Post, Hashtag } = require('../../models/index.model');
 
 exports.viewMainPage = async (req, res, next) => {
-    // 메인 화면 전환시, 계시글이 있으면 불러오기
+    // 메인 화면 전환시, 게시글이 있으면 불러오기
     try {
         // 게시글을 불러온다.
         const posts = await Post.findAll({

@@ -4,10 +4,12 @@ module.exports = class Post extends Sequelize.Model {
     static initiate(sequelize) {
         Post.init({
             content: {
+                // 게시글
                 type: Sequelize.STRING(140),
                 allowNull: false,
             },
             img: {
+                // 이미지 경로
                 type: Sequelize.STRING(200),
                 allowNull: true,
             },
