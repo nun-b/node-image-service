@@ -3,8 +3,8 @@ const path = require('path');
 const multer = require('multer');
 const express = require('express');
 
-const { afterUploadImage, uploadPost } = require('../controllers/post');
-const { isLoggedIn } = require('../function/login-status');
+const { afterUploadImage, uploadPost } = require('./controllers/post.control');
+const { isLoggedIn } = require('./middleware/login-status');
 
 const router = express.Router();
 
@@ -18,6 +18,7 @@ try {
 }
 
 const upload = multer({
+    // 이미지만 업로드
     storage: multer.diskStorage({
         // 파일 저장은 디스크 폴더(uploads)에 한다.
         destination(req, file, cb) {
@@ -37,12 +38,13 @@ const upload = multer({
 // -> 업로드한 이미지 정보(img-url)를 받아서,
 // -> 게시글 업로드한다.(req.body.content, req.body.url)
 
-// POST /post/img
-// 이미지를 업로드 하는 루틴 ( img -> html tag 이름 )
+// POST /post/img : 이미지를 업로드 하는 루틴
+// upload.single('img') : 이미지업로드 하는 루틴
+// afterUploadImage : 이미지 업로드하고, 저장 위치를 리턴('/img/${req.file.filename}')
 router.post('/img', isLoggedIn, upload.single('img'), afterUploadImage);
 
 // POST /post
-// 게시글을 업로드 하는 루틴
+// uploadPost : 게시글(text)을 업로드 하는 루틴
 const upload2 = multer();
 router.post('/', isLoggedIn, upload2.none(), uploadPost);
 

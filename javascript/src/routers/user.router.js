@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { isLoggedIn } = require('../function/login-status');
-const { follow } = require('../controllers/user');
+const { isLoggedIn } = require('./middleware/login-status');
+const { follow } = require('./controllers/user.control');
 
 const router = express.Router();
 

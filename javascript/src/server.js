@@ -8,15 +8,21 @@ const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const { sequelize } = require('./models/index.model');
+const passportConfig = require('./passport/index.passport');
 
 (() => {
     const result = dotenv.config({ path: path.join(__dirname, "config", ".env") });
     if (result.parsed == undefined) throw new Error("Cannot loaded environment variables file.");
 })();
 
+const userRouter = require('./routers/user.router');
+const postRouter = require('./routers/post.router');
+const authRouter = require('./routers/auth.router');
 const indexRouter = require('./routers/index.router');
 
+
 const server = express();
+passportConfig();
 server.set('view engine', 'html'); // nunjucks
 nunjucks.configure('src/views', {
     express: server,
@@ -49,6 +55,9 @@ server.use(passport.session());
 
 
 server.use('/', indexRouter);
+server.use('/user', userRouter);
+server.use('/post', postRouter);
+server.use('/auth', authRouter);
 
 server.use((req, res, next) => {
     console.log(`${req.method} :: ${req.url} 라우터가 없습니다.`);

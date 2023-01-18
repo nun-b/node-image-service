@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User } = require('../dbases/models');
+const { User } = require('../../models/index.model');
 
 exports.join = async (req, res, next) => {
     const { nick, email, password } = req.body;        // form 데이터 읽음

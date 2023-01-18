@@ -1,4 +1,4 @@
-const User = require('../dbases/models/user');
+const User = require('../../models/index.model');
 
 exports.follow = async (req, res, next) => {
     // 내 아이디 : req.user.id ( followerId )

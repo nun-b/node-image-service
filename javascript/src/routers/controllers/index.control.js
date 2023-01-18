@@ -1,5 +1,6 @@
 'use strict';
-const { User, Post, Hashtag } = require('../../models/index.model');
+const { v4: uuidv4 } = require('uuid');
+const { User, Post, Hashtag, Juso } = require('../../models/index.model');
 
 exports.viewMainPage = async (req, res, next) => {
     // 메인 화면 전환시, 게시글이 있으면 불러오기
@@ -76,3 +77,36 @@ exports.viewHashTagPage = async (req, res, next) => {
         return next(error);
     }
 };
+
+exports.viewDomainPage = async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.user?.id || null },
+            include: { model: Juso },
+        });
+
+        res.render('login', {
+            user,
+            domains: user?.Domains,
+        });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
+
+exports.createJuso = async (req, res, next) => {
+    try {
+        await Juso.create({
+            UserId: req.user.id,
+            host: req.body.host,
+            type: req.body.type,
+            clientSecret: uuidv4(),
+        });
+        res.redirect('/');
+
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}

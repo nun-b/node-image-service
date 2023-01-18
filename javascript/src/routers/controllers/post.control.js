@@ -1,4 +1,4 @@
-const { Post, Hashtag } = require('../dbases/models');
+const { Post, Hashtag } = require('../../models/index.model');
 
 exports.afterUploadImage = (req, res) => {
     // 이미지 업로드 업로드 한 경우
@@ -22,6 +22,7 @@ exports.uploadPost = async (req, res, next) => {
             UserId: req.user.id,
         });
 
+        // 헤시테그 추출
         // 문자열 중에서 헤시태그 달린 단어(#노드)를 걸러 낸다.
         // /#[^\s#]*/g :: #이 나오고 뒤에, 공백 또는 #이 아닌 나머지
         const hashtags = req.body.content.match(/#[^\s#]*/g);
@@ -30,17 +31,16 @@ exports.uploadPost = async (req, res, next) => {
             const result = await Promise.all(
                 hashtags.map(tag => {
                     return Hashtag.findOrCreate({
-                        // 기존 헤시태그가 있으면 가져오고
-                        // 없으면 생성해서 가져온다.
+                        // 기존 헤시태그가 있으면 가져오고, 없으면 생성해서 가져온다.
                         // tag.slice(1) : 앞에 # 없엘려구 한다.
                         // 대문자가 있으면 소문자로 변경
                         where: { title: tag.slice(1).toLowerCase() },
                     })
                 }),
             );
+            // Promise.all 실행 하면
             // [[모델, bool],[모델, bool],[모델, bool]]
-            // result.map(r => r[0]) 하면
-            // [모델, ,모델 ,모델] 생성후
+            // result.map(r => r[0]) 하면 ==> [모델, 모델 ,모델] 생성
             // post.addHashtags() 실행
             await post.addHashtags(result.map(r => r[0]));
         }

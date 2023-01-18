@@ -2,7 +2,7 @@ const passport = require('passport');
 const KakaoStrategy = require('passport-kakao').Strategy;
 // https://www.passportjs.org/packages/passport-kakao/
 
-const User = require('../dbases/models/user');
+const User = require('../models/user.model');
 /*
 _json: {
     id: 1545323967,
@@ -42,13 +42,14 @@ module.exports = () => {
         // done : 로그인 처리
         console.log('kakao profile', profile);
         try {
-            const exUser = await User.findOne({
+            const passUser = await User.findOne({
                 // 기존 유저 찾기
                 where: { snsId: profile.id, provider: 'kakao' },
             });
-            if (exUser) {
-                // 로그인
-                done(null, exUser);
+            if (passUser) {
+                // 로그인 성공
+                // authError -> null, user -> passUser
+                done(null, passUser);
             } else {
                 // 회원가입
                 console.log('email', profile._json?.kakao_account?.email); // 이메일 확인(변경 가능)
