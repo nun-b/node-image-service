@@ -17,8 +17,8 @@ db.sequelize = sequelize;
 const basename = path.basename(__filename); // index.js
 
 fs.readdirSync(__dirname)
+    // 현재 폴더의 모든 파일을 조회
     .filter(file => {
-        // 현재 폴더의 모든 파일을 조회
         // ① 숨김파일 제외, ② index.model.js 제외, ③ 파일 이름의 마지막 8자리는 'model.js'이어야 한다.
         return file.indexOf('.') !== 0 && file !== basename && file.slice(-8) === 'model.js';
     })
