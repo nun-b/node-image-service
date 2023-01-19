@@ -17,7 +17,7 @@ const error404: RequestHandler = (req, res, next) => {
 
     // 해결 types른 정의 : src/types/index.d.ts
     // interface Error()에 status 속성 추가
-    // error.status = 404;
+    error.status = 404;
     next(error);
 };
 

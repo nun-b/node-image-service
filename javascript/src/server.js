@@ -20,7 +20,6 @@ const postRouter = require('./routers/post.router');
 const authRouter = require('./routers/auth.router');
 const indexRouter = require('./routers/index.router');
 
-
 const server = express();
 passportConfig();
 server.set('view engine', 'html'); // nunjucks
