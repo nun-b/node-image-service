@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { isLoggedIn, isNotLoggedIn } from './middleware/status-login';
+import { isLoggedIn, isNotLoggedIn } from './middleware/status';
 import { MainPage, JoinPage, ProfilePage, HashtagPage } from './controllers/index.control';
 
 const router = Router();

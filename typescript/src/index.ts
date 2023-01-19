@@ -7,7 +7,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import express, { Application } from 'express';
 import { CorsOptions } from './routers/middleware/options';
-import { error404, errorHandler } from './routers/middleware/error';
+import { error404, errorHandler } from './routers/middleware/errors';
 
 import indexRouter from './routers/index.router';
 
