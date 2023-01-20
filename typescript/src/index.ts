@@ -3,16 +3,19 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import passport from 'passport';
+import nunjucks from 'nunjucks';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import express, { Application, RequestHandler } from 'express';
 import { corsOptions } from './routers/middleware/options';
 import { error404, errorHandler } from './routers/middleware/errors';
-import IUser from './models/user.model';
 
-import indexRouter from './routers/index.router';
+import IUser from './models/user.model';
+import { sequelize } from './models/index.model';
+import passportConfig from './passport/index.passport';
 
 declare global {
+    // error404에서 error.status에 에러
     // Error 객체에 status 속성을 추가
     interface Error { status: number; }
     // index.passport에 user.id에서 에러
@@ -27,8 +30,19 @@ declare global {
     const result = dotenv.config({ path: path.join(__dirname, "config", ".env") });
     if (result.parsed == undefined) throw new Error("Cannot loaded environment variables file.");
 })();
+passportConfig();
+
+import indexRouter from './routers/index.router';
 
 const server: Application = express();
+server.set('view engine', 'html'); // nunjucks
+nunjucks.configure('src/views', {
+    express: server,
+    watch: true,
+});
+// sequelize.sync({ force: false })
+// .then(()=> { console.log('데이터 베이스 연결'); })
+// .catch((err) => { console.error(err); })
 server.use(morgan('dev'));
 server.use(cors(corsOptions));
 server.use('/', express.static(path.join(__dirname, 'public')));
@@ -47,6 +61,8 @@ server.use(session({
         secure: false,
     }
 }));
+server.use(passport.initialize());
+server.use(passport.session());
 
 server.use('/', indexRouter);
 
