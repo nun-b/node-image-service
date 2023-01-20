@@ -5,11 +5,23 @@ import morgan from 'morgan';
 import passport from 'passport';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
-import express, { Application } from 'express';
+import express, { Application, RequestHandler } from 'express';
 import { corsOptions } from './routers/middleware/options';
 import { error404, errorHandler } from './routers/middleware/errors';
+import IUser from './models/user.model';
 
 import indexRouter from './routers/index.router';
+
+declare global {
+    // Error 객체에 status 속성을 추가
+    interface Error { status: number; }
+    // index.passport에 user.id에서 에러
+    // Express.User{} 속성에 아무것도 없음
+    // User 테이블 속성들을 가져와서, Express.User{}에 속성 추가
+    namespace Express {
+        interface User extends IUser { }
+    }
+}
 
 (() => {
     const result = dotenv.config({ path: path.join(__dirname, "config", ".env") });
